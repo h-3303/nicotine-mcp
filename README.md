@@ -1,5 +1,7 @@
 # nicotine-mcp
 
+**Site:** https://h-3303.github.io/nicotine-mcp · **Repo:** https://github.com/h-3303/nicotine-mcp
+
 Lets Claude (Claude Code, or Claude Desktop) drive a running Nicotine+ client: search Soulseek, inspect results, queue files or whole folders, and manage downloads.
 
 ```
@@ -57,3 +59,15 @@ For Claude Desktop or any other MCP client, register the command `uv run --scrip
 - **Nicotine+ 3.3 large folders:** for folders over 100 files, Nicotine+ also shows its own confirmation dialog. The bridge queues the files regardless, and duplicate queue entries are ignored.
 - **Headless use:** `nicotine --headless` runs Nicotine+ without a GUI. Enable the plugin once from the GUI first, since the setting persists.
 - **Protocol:** one JSON request per connection, of the form `{"method": ..., "params": {...}}\n`. See the `HANDLERS` table in the plugin to add methods.
+
+## Related
+
+The same bridge plugin and server also ship inside [claude-music](https://github.com/h-3303/claude-music), a Claude Code
+plugin that imports a streaming playlist, matches it against your library and fetches the missing tracks through
+Nicotine+. This repository is the standalone server on its own.
+
+## Layout
+
+`plugin/mcp_bridge` (the Nicotine+ plugin, stdlib only) · `server/nicotine_mcp.py` (the MCP server, a `uv` script) ·
+`install.sh` · `docs/` (the site, served by GitHub Pages; set in the
+[Death to the World](https://github.com/h-3303/dttw) design language). Licence: GPL-3.0-or-later.

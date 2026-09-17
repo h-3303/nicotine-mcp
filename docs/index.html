@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nicotine-mcp — Soulseek for Claude</title>
+<meta name="description" content="An MCP server and Nicotine+ plugin that let Claude (Claude Code or Claude Desktop) drive your running Soulseek client: search, inspect results, queue files or whole folders, and manage downloads. Local Unix socket, no TCP listener, GPL-3.0.">
+<link rel="canonical" href="https://h-3303.github.io/nicotine-mcp/">
+<meta name="theme-color" content="#141412">
+<meta name="keywords" content="MCP, Model Context Protocol, MCP server, Claude, Claude Code, Claude Desktop, Soulseek, Nicotine+, music, downloads, plugin">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nicotine-mcp">
+<meta property="og:title" content="nicotine-mcp — Soulseek for Claude">
+<meta property="og:description" content="Search Soulseek. Queue albums. Manage downloads. An MCP server over a running Nicotine+ client, for Claude Code and Claude Desktop.">
+<meta property="og:url" content="https://h-3303.github.io/nicotine-mcp/">
+<meta property="og:image" content="https://h-3303.github.io/nicotine-mcp/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="nicotine-mcp: Search Soulseek. Queue albums. Manage downloads.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="nicotine-mcp — Soulseek for Claude">
+<meta name="twitter:description" content="Search Soulseek. Queue albums. Manage downloads. An MCP server over a running Nicotine+ client.">
+<meta name="twitter:image" content="https://h-3303.github.io/nicotine-mcp/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23141412'/%3E%3Ctext x='16' y='24' text-anchor='middle' font-family='serif' font-weight='700' font-size='22' fill='%23e8e5dc'%3En%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="dtw.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "nicotine-mcp",
+  "description": "An MCP server and Nicotine+ plugin that let Claude (Claude Code or Claude Desktop) drive your running Soulseek client: search, inspect results, queue files or whole folders, and manage downloads. Local Unix socket, no TCP listener, GPL-3.0.",
+  "url": "https://h-3303.github.io/nicotine-mcp/",
+  "codeRepository": "https://github.com/h-3303/nicotine-mcp",
+  "programmingLanguage": "Python",
+  "runtimePlatform": "Nicotine+ 3.3+",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+  "keywords": "MCP, Model Context Protocol, Claude, Soulseek, Nicotine+",
+  "author": { "@type": "Person", "name": "h-3303", "url": "https://github.com/h-3303" }
+}
+</script>
+<style>
+  /* Page furniture only, copied from the artboard: the system's tokens and classes do the rest. */
+  body { margin: 0; background: #141412; }
+  a { color: inherit; text-decoration: none; border-bottom: 1px solid #1a1a18; }
+  a:hover { background: #d9d4c6; }
+  .dtw-reversed-panel a { border-bottom-color: #e8e5dc; }
+  .dtw-reversed-panel a:hover { background: transparent; }
+  :target { scroll-margin-top: 24px; }
+  @media (max-width: 560px) {
+    .dtw-masthead__title { font-size: 32px !important; }
+    .arch > span { display: none; }
+    .arch > .node { display: inline-block; }
+  }
+</style>
+</head>
+<body>
+<div style="width:min(880px, 94vw); margin:28px auto">
+<div class="dtw-sheet dtw-sheet--paper dtw-xerox">
+  <div style="padding:clamp(22px, 5vw, 52px)">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap">
+      <span style="white-space:nowrap"><div class="dtw-masthead dtw-masthead--bar" style="transform:rotate(-0.6deg)"><div class="dtw-masthead__title" style="font-size:40px">nicotine-mcp</div><div class="dtw-masthead__tagline">SOULSEEK · FOR CLAUDE · GPL-3.0</div></div></span>
+      <span style="white-space:nowrap"><span class="dtw-folio" style="transform:rotate(-4deg);font-size:18px">№ 01</span></span>
+    </div>
+    <div style="margin-top:34px">
+      <h2 class="dtw-headline" style="font-size:27px;text-align:left">SEARCH SOULSEEK. QUEUE ALBUMS. MANAGE DOWNLOADS.</h2>
+    </div>
+    <div style="margin-top:14px">
+      <div class="dtw-body" style="font-size:15px;text-align:left">Lets Claude (Claude Code, or Claude Desktop) drive a running Nicotine+ client: search Soulseek, inspect results, queue files or whole folders, and manage downloads.</div>
+    </div>
+    <div style="margin-top:12px">
+      <div class="dtw-typewriter dtw-typewriter--muted" style="font-size:11.5px">Tested against Nicotine+ 3.3.10, 3.3.11 and 3.4.0.dev2, with MCP Python SDK 2.x.</div>
+    </div>
+    <nav style="display:flex; gap:18px; flex-wrap:wrap; margin-top:24px; font-family:var(--dtw-font-typewriter); font-size:11px; letter-spacing:.16em; text-transform:uppercase">
+      <a href="#install">Install</a><a href="#tools">Tools</a><a href="#settings">Settings</a><a href="#security">Security</a><a href="#notes">Notes</a><a href="#transcript">Transcript</a><a href="https://github.com/h-3303/nicotine-mcp">GitHub ↗</a>
+    </nav>
+
+    <div class="arch" style="display:flex; align-items:center; justify-content:center; gap:14px 12px; flex-wrap:wrap; margin-top:38px">
+      <span class="node" style="white-space:nowrap"><div class="dtw-bar-heading dtw-bar-heading--typewriter" style="transform:rotate(-0.8deg)">CLAUDE CODE / DESKTOP</div></span>
+      <span style="font-family:var(--dtw-font-typewriter);font-size:10px;letter-spacing:.08em;white-space:nowrap">──stdio──▶</span>
+      <span class="node" style="white-space:nowrap"><div class="dtw-pasted-slip dtw-pasted-slip--typewriter" style="transform:rotate(0.7deg)">nicotine-mcp · uv script</div></span>
+      <span style="font-family:var(--dtw-font-typewriter);font-size:10px;letter-spacing:.08em;white-space:nowrap">──unix socket──▶</span>
+      <span class="node" style="white-space:nowrap"><div class="dtw-pasted-slip dtw-pasted-slip--typewriter" style="transform:rotate(-1.1deg)">MCP Bridge plugin</div></span>
+      <span class="node" style="display:inline-flex; align-items:center; gap:12px; white-space:nowrap">
+        <span style="font-family:var(--dtw-font-typewriter); font-size:10px; letter-spacing:.08em">──▶</span>
+        <div class="dtw-bar-heading dtw-bar-heading--typewriter" style="transform:rotate(0.6deg)">NICOTINE+ CORE</div>
+      </span>
+    </div>
+
+    <div style="margin-top:40px"><div class="dtw-ornament dtw-ornament--diamond"><div class="dtw-ornament__line"></div><div class="dtw-ornament__diamond"></div><div class="dtw-ornament__line"></div></div></div>
+
+    <div id="install" style="margin-top:40px">
+      <div class="dtw-bar-heading dtw-bar-heading--serif" style="transform:rotate(-0.5deg)">INSTALL.</div>
+      <div style="margin-top:20px">
+        <div class="dtw-reversed-panel" style="transform:rotate(0.4deg)">
+          <div style="font-family:var(--dtw-font-typewriter); font-size:13px; line-height:1.7; white-space:pre-line">$ sudo pacman -S --needed nicotine+ uv
+$ git clone https://github.com/h-3303/nicotine-mcp &amp;&amp; cd nicotine-mcp
+$ ./install.sh</div>
+        </div>
+      </div>
+      <div style="margin-top:20px"><div class="dtw-body" style="font-size:14.5px;text-align:left">The installer does four things:</div></div>
+      <div style="margin-top:14px"><div class="dtw-x-list">
+        <div class="dtw-x-list__item" style="font-size:13.5px"><span class="dtw-x-list__x">X</span><span>copies plugin/mcp_bridge into ~/.local/share/nicotine/plugins/ (or the Flatpak data directory, if that’s your install);</span></div>
+        <div class="dtw-x-list__item" style="font-size:13.5px"><span class="dtw-x-list__x">X</span><span>installs the server as ~/.local/bin/nicotine-mcp;</span></div>
+        <div class="dtw-x-list__item" style="font-size:13.5px"><span class="dtw-x-list__x">X</span><span>pre-fetches its dependencies;</span></div>
+        <div class="dtw-x-list__item" style="font-size:13.5px"><span class="dtw-x-list__x">X</span><span>runs claude mcp add --scope user nicotine -- uv run --script ~/.local/bin/nicotine-mcp.</span></div>
+      </div></div>
+      <div style="margin-top:18px"><div class="dtw-body" style="font-size:14.5px;text-align:left">After that, open Nicotine+ → Preferences → Plugins, enable plugins, and tick MCP Bridge. The Nicotine+ log should show “MCP bridge listening on …”. Then claude mcp list should report nicotine as connected.</div></div>
+      <div style="margin-top:12px"><div class="dtw-typewriter dtw-typewriter--muted" style="font-size:11.5px">For Claude Desktop or any other MCP client, register the command  uv run --script ~/.local/bin/nicotine-mcp  as a stdio server.</div></div>
+    </div>
+
+    <div style="margin-top:40px"><div class="dtw-ornament dtw-ornament--diamond"><div class="dtw-ornament__line"></div><div class="dtw-ornament__diamond"></div><div class="dtw-ornament__line"></div></div></div>
+
+    <div id="tools" style="margin-top:40px">
+      <div style="display:flex; align-items:baseline; gap:16px; flex-wrap:wrap">
+        <div class="dtw-bar-heading dtw-bar-heading--serif" style="transform:rotate(0.4deg)">THE TOOLS.</div>
+        <span style="font-family:var(--dtw-font-typewriter); font-size:10px; letter-spacing:.16em; color:var(--dtw-label)">ELEVEN · READ-ONLY / WRITE / DESTRUCTIVE</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:30px; margin-top:28px">
+            <div class="dtw-pasted-box" style="transform:rotate(-0.6deg)">
+        <div id="nicotine_status" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">nicotine_status</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">READ-ONLY</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Connection state, logged-in username, download folder, download counts by status, tracked searches, and recent folder-download requests.</div></div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; nicotine_status()</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(0.4deg)">
+        <div id="search" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">search</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">READ-ONLY</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Search Soulseek and return results grouped by (user, folder), best candidates first. Soulseek matches every word against the full file path; use artist + album words, avoid punctuation. Results keep arriving after this returns; call get_search_results later with the same search_id for more. mode=&quot;user&quot; needs usernames; mode=&quot;rooms&quot; needs room. Filters (lossless_only, extensions like [&quot;flac&quot;], min_bitrate in kbps for lossy files, free_slot_only) only affect what is returned, not what is collected.</div></div>
+        <div style="margin-top:14px;font-family:var(--dtw-font-typewriter);font-size:11.5px">
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-ink);padding-bottom:4px;font-size:9px;letter-spacing:.14em;color:var(--dtw-label)"><span>PARAM</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">query</span><span style="overflow-wrap:anywhere">str</span><span>required</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">wait_seconds</span><span style="overflow-wrap:anywhere">int</span><span>12</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">mode</span><span style="overflow-wrap:anywhere">global | buddies | rooms | user</span><span>&quot;global&quot;</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">usernames</span><span style="overflow-wrap:anywhere">list[str]</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">room</span><span style="overflow-wrap:anywhere">str</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">lossless_only</span><span style="overflow-wrap:anywhere">bool</span><span>false</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">extensions</span><span style="overflow-wrap:anywhere">list[str]</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">min_bitrate</span><span style="overflow-wrap:anywhere">int (kbps)</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">free_slot_only</span><span style="overflow-wrap:anywhere">bool</span><span>false</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">max_folders</span><span style="overflow-wrap:anywhere">int</span><span>15</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">files_per_folder</span><span style="overflow-wrap:anywhere">int</span><span>25</span></div>
+        </div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; search(query=&quot;mingus ah um&quot;, lossless_only=true)</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(-0.4deg)">
+        <div id="get_search_results" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">get_search_results</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">READ-ONLY</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Re-read (and re-filter) an existing search. path_contains = space-separated words that must all appear in the path (case-insensitive); username restricts to one peer, handy for seeing a full folder.</div></div>
+        <div style="margin-top:14px;font-family:var(--dtw-font-typewriter);font-size:11.5px">
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-ink);padding-bottom:4px;font-size:9px;letter-spacing:.14em;color:var(--dtw-label)"><span>PARAM</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">search_id</span><span style="overflow-wrap:anywhere">int</span><span>required</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">lossless_only</span><span style="overflow-wrap:anywhere">bool</span><span>false</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">extensions</span><span style="overflow-wrap:anywhere">list[str]</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">min_bitrate</span><span style="overflow-wrap:anywhere">int (kbps)</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">free_slot_only</span><span style="overflow-wrap:anywhere">bool</span><span>false</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">username</span><span style="overflow-wrap:anywhere">str</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">path_contains</span><span style="overflow-wrap:anywhere">str</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">max_folders</span><span style="overflow-wrap:anywhere">int</span><span>15</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">files_per_folder</span><span style="overflow-wrap:anywhere">int</span><span>25</span></div>
+        </div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; get_search_results(search_id=41, username=&quot;vinylrip&quot;)</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(0.5deg)">
+        <div id="list_searches" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">list_searches</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">READ-ONLY</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Searches currently tracked by the bridge (id, query, age, file/user counts). The oldest are dropped past the configured limit.</div></div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; list_searches()</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(-0.5deg)">
+        <div id="stop_search" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">stop_search</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">DESTRUCTIVE</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Stop collecting results for a search and discard them (also closes its tab in Nicotine+).</div></div>
+        <div style="margin-top:14px;font-family:var(--dtw-font-typewriter);font-size:11.5px">
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-ink);padding-bottom:4px;font-size:9px;letter-spacing:.14em;color:var(--dtw-label)"><span>PARAM</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">search_id</span><span style="overflow-wrap:anywhere">int</span><span>required</span></div>
+        </div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; stop_search(search_id=41)</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(0.6deg)">
+        <div id="download_files" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">download_files</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">WRITE</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Queue specific files from a search by their result ids. With keep_folder_structure, files land in &lt;download folder&gt;/&lt;remote parent folder name&gt;/, which keeps album tracks together.</div></div>
+        <div style="margin-top:14px;font-family:var(--dtw-font-typewriter);font-size:11.5px">
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-ink);padding-bottom:4px;font-size:9px;letter-spacing:.14em;color:var(--dtw-label)"><span>PARAM</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">search_id</span><span style="overflow-wrap:anywhere">int</span><span>required</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">result_ids</span><span style="overflow-wrap:anywhere">list[int]</span><span>required</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">keep_folder_structure</span><span style="overflow-wrap:anywhere">bool</span><span>true</span></div>
+        </div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; download_files(search_id=41, result_ids=[3, 4, 5])</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(-0.7deg)">
+        <div id="download_folder" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">download_folder</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">WRITE</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Queue an entire remote folder (e.g. an album) from a user. folder_path is the ‘folder’ value from search results. The peer is asked for the folder listing first, so files appear in list_downloads a few seconds later. include_subfolders also grabs e.g. CD1/CD2 or Scans subfolders.</div></div>
+        <div style="margin-top:14px;font-family:var(--dtw-font-typewriter);font-size:11.5px">
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-ink);padding-bottom:4px;font-size:9px;letter-spacing:.14em;color:var(--dtw-label)"><span>PARAM</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">username</span><span style="overflow-wrap:anywhere">str</span><span>required</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">folder_path</span><span style="overflow-wrap:anywhere">str</span><span>required</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">include_subfolders</span><span style="overflow-wrap:anywhere">bool</span><span>false</span></div>
+        </div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; download_folder(username=&quot;vinylrip&quot;, folder_path=&quot;Music\\Mingus Ah Um (1959) [FLAC]&quot;)</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(0.4deg)">
+        <div id="list_downloads" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">list_downloads</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">READ-ONLY</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">List downloads with status, progress (0–1), speed and queue position, each with a download_id. Most recent last.</div></div>
+        <div style="margin-top:14px;font-family:var(--dtw-font-typewriter);font-size:11.5px">
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-ink);padding-bottom:4px;font-size:9px;letter-spacing:.14em;color:var(--dtw-label)"><span>PARAM</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">statuses</span><span style="overflow-wrap:anywhere">list[status]</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">username</span><span style="overflow-wrap:anywhere">str</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">limit</span><span style="overflow-wrap:anywhere">int</span><span>50</span></div>
+        </div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:10px;color:var(--dtw-label);margin-top:10px;line-height:1.6">statuses: Queued · Getting status · Transferring · Paused · Cancelled · Filtered · Finished · User logged off · Connection closed · Connection timeout · Download folder error · Local file error</div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; list_downloads(statuses=[&quot;Transferring&quot;])</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(-0.4deg)">
+        <div id="cancel_downloads" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">cancel_downloads</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">DESTRUCTIVE</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Cancel downloads by download_id (from list_downloads). Partial files stay in the incomplete folder.</div></div>
+        <div style="margin-top:14px;font-family:var(--dtw-font-typewriter);font-size:11.5px">
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-ink);padding-bottom:4px;font-size:9px;letter-spacing:.14em;color:var(--dtw-label)"><span>PARAM</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">download_ids</span><span style="overflow-wrap:anywhere">list[str]</span><span>required</span></div>
+        </div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; cancel_downloads(download_ids=[&quot;9f2c01ab34de&quot;])</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(0.5deg)">
+        <div id="retry_downloads" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">retry_downloads</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">WRITE</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Retry failed, paused or cancelled downloads by download_id.</div></div>
+        <div style="margin-top:14px;font-family:var(--dtw-font-typewriter);font-size:11.5px">
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-ink);padding-bottom:4px;font-size:9px;letter-spacing:.14em;color:var(--dtw-label)"><span>PARAM</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">download_ids</span><span style="overflow-wrap:anywhere">list[str]</span><span>required</span></div>
+        </div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; retry_downloads(download_ids=[&quot;9f2c01ab34de&quot;])</div>
+      </div>
+      <div class="dtw-pasted-box" style="transform:rotate(-0.6deg)">
+        <div id="clear_downloads" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-family:var(--dtw-font-typewriter);font-size:15px;letter-spacing:.06em">clear_downloads</span>
+          <span style="border:1px solid var(--dtw-ink);font-family:var(--dtw-font-typewriter);font-size:9px;letter-spacing:.16em;padding:3px 7px">DESTRUCTIVE</span>
+        </div>
+        <div style="margin-top:12px"><div class="dtw-body" style="font-size:13.5px;text-align:left">Remove entries from the download list (does not delete finished files from disk). Give download_ids, statuses (e.g. [&quot;Finished&quot;]), or both — it refuses to clear everything.</div></div>
+        <div style="margin-top:14px;font-family:var(--dtw-font-typewriter);font-size:11.5px">
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-ink);padding-bottom:4px;font-size:9px;letter-spacing:.14em;color:var(--dtw-label)"><span>PARAM</span><span>TYPE</span><span>DEFAULT</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">download_ids</span><span style="overflow-wrap:anywhere">list[str]</span><span>—</span></div>
+          <div style="display:grid;grid-template-columns:minmax(130px, 200px) 1fr minmax(64px, 100px);gap:0 12px;border-bottom:1px solid var(--dtw-grey-2);padding:5px 0"><span style="overflow-wrap:anywhere">statuses</span><span style="overflow-wrap:anywhere">list[status]</span><span>—</span></div>
+        </div>
+        <div style="font-family:var(--dtw-font-typewriter);font-size:11px;color:var(--dtw-label);margin-top:12px;overflow-wrap:anywhere">e.g.&nbsp; clear_downloads(statuses=[&quot;Finished&quot;])</div>
+      </div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px"><div class="dtw-ornament dtw-ornament--diamond"><div class="dtw-ornament__line"></div><div class="dtw-ornament__diamond"></div><div class="dtw-ornament__line"></div></div></div>
+
+    <div id="settings" style="margin-top:40px">
+      <div class="dtw-bar-heading dtw-bar-heading--serif" style="transform:rotate(-0.4deg)">PLUGIN SETTINGS.</div>
+      <div style="margin-top:14px"><div class="dtw-typewriter dtw-typewriter--tracked dtw-typewriter--caps dtw-typewriter--muted" style="font-size:10px">Preferences → Plugins → MCP Bridge</div></div>
+      <div style="display:flex; flex-direction:column; gap:18px; margin-top:20px">
+        <div style="display:grid; grid-template-columns:minmax(120px, 190px) 1fr; gap:14px"><span style="font-family:var(--dtw-font-typewriter); font-size:11px; letter-spacing:.1em; text-transform:uppercase; padding-top:2px">Socket path</span><div class="dtw-body" style="font-size:13.5px;text-align:left">Leave empty for $XDG_RUNTIME_DIR/nicotine-mcp.sock. Flatpak installs automatically use $XDG_RUNTIME_DIR/app/org.nicotine_plus.Nicotine/nicotine-mcp.sock. If you set a custom path, export the same path as NICOTINE_MCP_SOCKET for the server, for example with claude mcp add --env NICOTINE_MCP_SOCKET=…</div></div>
+        <div style="display:grid; grid-template-columns:minmax(120px, 190px) 1fr; gap:14px"><span style="font-family:var(--dtw-font-typewriter); font-size:11px; letter-spacing:.1em; text-transform:uppercase; padding-top:2px">Allow downloads</span><div class="dtw-body" style="font-size:13.5px;text-align:left">Switch this off for search-only access.</div></div>
+        <div style="display:grid; grid-template-columns:minmax(120px, 190px) 1fr; gap:14px"><span style="font-family:var(--dtw-font-typewriter); font-size:11px; letter-spacing:.1em; text-transform:uppercase; padding-top:2px">Max results / max searches</span><div class="dtw-body" style="font-size:13.5px;text-align:left">Max results per search and max searches kept are memory caps; the oldest searches are removed first.</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px"><div class="dtw-ornament dtw-ornament--diamond"><div class="dtw-ornament__line"></div><div class="dtw-ornament__diamond"></div><div class="dtw-ornament__line"></div></div></div>
+
+    <div id="security" style="margin-top:40px">
+      <div class="dtw-bar-heading dtw-bar-heading--serif" style="transform:rotate(0.5deg)">SECURITY MODEL.</div>
+      <div style="display:flex; gap:28px; align-items:flex-start; flex-wrap:wrap; margin-top:20px">
+        <div style="flex:1 1 380px; display:flex; flex-direction:column; gap:14px">
+          <div class="dtw-body" style="font-size:14px;text-align:left">Access control: the socket file is 0600, and the plugin also rejects any peer whose UID (from SO_PEERCRED) doesn’t match its own. There is no TCP listener, so browsers and other local users can’t reach it.</div>
+          <div class="dtw-body" style="font-size:14px;text-align:left">Stability: all requests are run on Nicotine+’s main loop. Errors are caught before they reach Nicotine+’s event bus, because an uncaught exception in a main-thread callback makes Nicotine+ quit.</div>
+        </div>
+        <div style="white-space:nowrap; margin-top:6px">
+          <div class="dtw-stamp" style="transform:rotate(-3deg)">0600 · SAME UID · NO TCP</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px"><div class="dtw-ornament dtw-ornament--diamond"><div class="dtw-ornament__line"></div><div class="dtw-ornament__diamond"></div><div class="dtw-ornament__line"></div></div></div>
+
+    <div id="notes" style="margin-top:40px">
+      <div class="dtw-bar-heading dtw-bar-heading--serif" style="transform:rotate(-0.6deg)">NOTES.</div>
+      <div style="margin-top:20px"><div class="dtw-x-list">
+        <div class="dtw-x-list__item" style="font-size:13px"><span class="dtw-x-list__x">X</span><span>Search results: they trickle in from peers for a minute or more. Call get_search_results again for a fuller picture.</span></div>
+        <div class="dtw-x-list__item" style="font-size:13px"><span class="dtw-x-list__x">X</span><span>Folder downloads: these ask the peer for the folder listing first, so the files appear in list_downloads a few seconds later. Requests that get no answer are reported as timed out in nicotine_status after 3 minutes.</span></div>
+        <div class="dtw-x-list__item" style="font-size:13px"><span class="dtw-x-list__x">X</span><span>Nicotine+ 3.3 large folders: for folders over 100 files, Nicotine+ also shows its own confirmation dialog. The bridge queues the files regardless, and duplicate queue entries are ignored.</span></div>
+        <div class="dtw-x-list__item" style="font-size:13px"><span class="dtw-x-list__x">X</span><span>Headless use: nicotine --headless runs Nicotine+ without a GUI. Enable the plugin once from the GUI first, since the setting persists.</span></div>
+        <div class="dtw-x-list__item" style="font-size:13px"><span class="dtw-x-list__x">X</span><span>Protocol: one JSON request per connection, of the form {&quot;method&quot;: ..., &quot;params&quot;: {...}}. See the HANDLERS table in the plugin to add methods.</span></div>
+      </div></div>
+    </div>
+
+    <div style="margin-top:40px"><div class="dtw-ornament dtw-ornament--diamond"><div class="dtw-ornament__line"></div><div class="dtw-ornament__diamond"></div><div class="dtw-ornament__line"></div></div></div>
+    <div id="transcript" style="margin-top:40px">
+      <div class="dtw-bar-heading dtw-bar-heading--serif" style="transform:rotate(0.4deg)">A TRANSCRIPT.</div>
+      <div style="margin-top:22px"><div class="dtw-hand" style="font-size:21.5px">find me Mingus — Ah Um, lossless if you can…</div></div>
+      <div style="margin-top:18px">
+        <div class="dtw-pasted-box" style="transform:rotate(-0.5deg)">
+          <div style="display:flex; flex-direction:column; gap:9px; font-family:var(--dtw-font-typewriter); font-size:11.5px; line-height:1.55">
+            <div style="display:grid; grid-template-columns:20px 1fr; gap:8px"><span>→</span><span style="overflow-wrap:anywhere">search(query=&quot;mingus ah um&quot;, lossless_only=true)</span></div>
+            <div style="display:grid; grid-template-columns:20px 1fr; gap:8px"><span>←</span><span style="overflow-wrap:anywhere">214 files from 37 users · best folder: “vinylrip” — 12 files matched, flac 16bit 44.1kHz, free slot, queue 0</span></div>
+            <div style="display:grid; grid-template-columns:20px 1fr; gap:8px"><span>→</span><span style="overflow-wrap:anywhere">download_folder(username=&quot;vinylrip&quot;, folder_path=&quot;Music\\Jazz\\Mingus Ah Um (1959) [FLAC]&quot;)</span></div>
+            <div style="display:grid; grid-template-columns:20px 1fr; gap:8px"><span>←</span><span style="overflow-wrap:anywhere">requested — files are queued once the user replies; check status or list_downloads</span></div>
+            <div style="display:grid; grid-template-columns:20px 1fr; gap:8px"><span>→</span><span style="overflow-wrap:anywhere">list_downloads(statuses=[&quot;Transferring&quot;])</span></div>
+            <div style="display:grid; grid-template-columns:20px 1fr; gap:8px"><span>←</span><span style="overflow-wrap:anywhere">12 downloads · 3 transferring at 1,240 kbps · 9 queued</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px"><div class="dtw-body dtw-body--italic" style="font-size:14px;text-align:left">“Queued the 1959 album in FLAC — twelve tracks on their way to your download folder. I’ll check list_downloads again in a minute.”</div></div>
+    </div>
+
+    <div style="margin-top:48px"><div class="dtw-ornament dtw-ornament--stars">✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦</div></div>
+    <div style="margin-top:18px; text-align:center; font-family:var(--dtw-font-typewriter); font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--dtw-label)">
+      GPL-3.0 · <a href="https://github.com/h-3303/nicotine-mcp">github.com/h-3303/nicotine-mcp</a> · One socket · Pass it on
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>
