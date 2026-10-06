@@ -71,3 +71,7 @@ Nicotine+. This repository is the standalone server on its own.
 `plugin/mcp_bridge` (the Nicotine+ plugin, stdlib only) · `server/nicotine_mcp.py` (the MCP server, a `uv` script) ·
 `install.sh` · `docs/` (the site, served by GitHub Pages; set in the
 [Death to the World](https://github.com/h-3303/dttw) design language). Licence: GPL-3.0-or-later.
+
+---
+
+Built by [Moirai Digital](https://www.moiraidigital.com).
